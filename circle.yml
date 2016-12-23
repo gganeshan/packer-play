@@ -1,0 +1,29 @@
+machine:
+  environment:
+    PATH: $HOME/.packer:$PATH
+    # https://github.com/hashicorp/packer/blob/master/CHANGELOG.md
+    PACKER_VERSION: 0.12.1
+    AWS_DEFAULT_REGION: us-west-2
+dependencies:
+  cache_directories:
+    - ~/.packer
+  pre:
+    - |
+      # Create cache dir if necessary.
+      mkdir -p $HOME/.packer
+      # Remove old plugins (if any) from cache.
+      find $HOME/.packer -name 'packer-*' -exec rm -f {} +
+      cd $HOME/.packer
+      CURRENT_VERSION="$([[ -x ./packer ]] && ./packer --version 2>&1 | awk -Fv '/^Packer/ {print $NF}')"
+      echo "CURRENT_VERSION=${CURRENT_VERSION}"
+      if ! [[ "x${CURRENT_VERSION}" == "x${PACKER_VERSION}" ]]; then
+      curl -LO https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip
+      unzip -uo packer_${PACKER_VERSION}_linux_amd64.zip
+      rm packer_${PACKER_VERSION}_linux_amd64.zip
+      fi
+test:
+  pre:
+    - command -v packer
+    - packer version
+    - packer validate example.json
+    - packer inspect example.json

@@ -25,5 +25,13 @@ test:
   pre:
     - command -v packer
     - packer version
-    - packer validate example.json
-    - packer inspect example.json
+  override:
+    - |
+      scripts/packer_test
+deployment:
+  production:
+    branch: master
+    owner: gganeshan
+    commands:
+      - |
+        scripts/packer_build

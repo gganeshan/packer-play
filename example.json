@@ -7,7 +7,8 @@
     "source_ami": "ami-5bff543b",
     "instance_type": "t2.micro",
     "ssh_username": "core",
-    "ami_name": "packer-coreos {{timestamp}}"
+    "ami_name": "packer-coreos {{timestamp}}",
+    "user_data_file": "files/user-data"
   }],
   "provisioners": [
     {

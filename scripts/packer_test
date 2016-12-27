@@ -1,2 +1,5 @@
-packer validate ../example.json
-packer inspect ../example.json
+echo 'Running validate...'
+packer validate ./example.json
+
+echo 'Running inspect...'
+packer inspect ./example.json

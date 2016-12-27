@@ -6,7 +6,7 @@
     "region": "us-west-2",
     "source_ami": "ami-d2c924b2",
     "instance_type": "t2.micro",
-    "ssh_username": "core",
+    "ssh_username": "centos",
     "ami_name": "packer-example {{timestamp}}"
   }]
 }

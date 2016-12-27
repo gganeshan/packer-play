@@ -1,1 +1,2 @@
-packer build ../example.json
+echo 'time to build an image :-)'
+packer build ./example.json

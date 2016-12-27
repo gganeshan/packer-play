@@ -1,3 +1,4 @@
+#cloud-config
 coreos:
   units:
     - name: 10-weave.network
@@ -36,3 +37,24 @@ coreos:
         ExecStartPre=/usr/bin/docker pull zettio/weavedns:latest
         ExecStartPre=/usr/bin/docker pull weaveworks/weaveexec:latest
         ExecStart=/bin/echo Weave Installed
+
+    - name: weave.service
+      command: start
+      enable: true
+      content: |
+        [Unit]
+        After=network-online.target
+        After=docker.service
+        After=install-weave.service
+        Description=Start Weave Service
+        Documentation=http://zettio.github.io/weave/
+        Requires=network-online.target
+        Requires=docker.service
+        Requires=install-weave.service
+
+        [Service]
+        Type=oneshot
+        RemainAfterExit=yes
+        ExecStartPre=/opt/bin/weave launch
+        ExecStartPre=/opt/bin/weave version
+        ExecStart=/bin/echo Weave Service Started
